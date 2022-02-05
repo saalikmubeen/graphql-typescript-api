@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  email              String   @unique
+  username           String?
+  password           String?
+  createdAt          DateTime @default(now())
+  resetToken         String?
+  resetTokenExpiry   Float?
+  confirmed          Boolean? @default(false)
+  confirmToken       String?
+  confirmTokenExpiry Float?
+  passwordChangedAt  Float?
+  twitterId          String? @unique
+  
+  posts              Post[]    // doesn't exist in database, just exist in prisma client
+}
+
+
+model Post {
+    id               Int         @id @default(autoincrement())
+    title            String      @unique
+    description      String
+    published        Boolean     @default(false)
+    createdAt        DateTime    @default(now())
+    
+    authorId         Int         // exist in database. It is the foreign key that connects Post and User. Relation scalar field (used in the `@relation` attribute below)
+    author           User        @relation(fields: [authorId], references: [id])   // doesn't exist in database, just exist in prisma client
+}

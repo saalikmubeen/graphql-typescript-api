@@ -1,0 +1,45 @@
+type Query {
+    hello(name: String): String!
+    me: User
+    getUsers: [User]!
+
+    allPosts: [Post!]!
+    posts: [Post!]!
+}
+
+type Mutation {
+    register(username: String!, email: String!, password: String!): User!
+    login(email: String!, password: String!): User!
+    logOut: String!
+    requestPasswordReset(email: String!): String!
+    resetPassword(
+        resetToken: String!
+        password: String!
+        confirmPassword: String!
+    ): User!
+
+    createPost(data: CreatePostInput!, authorId: Int!): Post!
+}
+
+type User {
+    id: ID!
+    username: String
+    email: String!
+    password: String
+    posts: [Post!]!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    description: String!
+    published: Boolean!
+    createdAt: String!
+    author: User!
+}
+
+input CreatePostInput {
+    title: String!
+    description: String!
+    published: Boolean!
+}
